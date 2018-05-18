@@ -5,6 +5,7 @@ const config = require('../config')
 const merge = require('webpack-merge')
 const path = require('path')
 const baseWebpackConfig = require('./webpack.base.conf')
+const extraWebpackConfig = require('./webpack.dev.extra.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
@@ -21,7 +22,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   devtool: config.dev.devtool,
 
   // these devServer options should be customized in /config/index.js
-  devServer: {
+  devServer: merge(extraWebpackConfig, {
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [
@@ -43,7 +44,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     watchOptions: {
       poll: config.dev.poll,
     }
-  },
+  }),
   plugins: [
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
