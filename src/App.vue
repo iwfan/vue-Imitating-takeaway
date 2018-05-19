@@ -52,6 +52,7 @@ export default {
         width 100%
         height 100%
         font-size 14px
+        outline none
         color rgb(77, 85, 93)
         &.router-link-active
           color rgb(240, 20, 20)

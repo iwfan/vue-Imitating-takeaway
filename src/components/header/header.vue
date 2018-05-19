@@ -3,12 +3,19 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'v-header',
   data () {
     return {
-      title: 'this is header'
+      title: 'this is header',
+      seller: {}
     }
+  },
+  created () {
+    axios.get('/api/seller').then(response => {
+      console.log(response.data)
+    })
   }
 }
 </script>
