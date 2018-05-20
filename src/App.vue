@@ -1,6 +1,6 @@
 <template lang="pug">
   #takeaway
-    v-header
+    v-header(:seller="seller")
     nav.tab.border-1px
       .tab-item
         router-link(to="goods") 商品
@@ -13,13 +13,24 @@
 </template>
 
 <script>
-import header from '@/components/header/header'
+import axios from 'axios'
 import router from '@/router'
+import header from '@/components/header/header'
 export default {
   name: 'App',
   router,
+  data () {
+    return {
+      seller: {}
+    }
+  },
   components: {
     'v-header': header
+  },
+  created () {
+    axios('/api/seller').then(({ data }) => {
+      this.seller = data.data
+    })
   },
   mounted () {
     // this.$router.go('/goods')
