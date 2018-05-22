@@ -53,10 +53,14 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: [
-          'babel-loader',
+          {
+            loader: 'babel-loader'
+          }, 
           {
             loader: 'ts-loader',
-            options: { appendTsxSuffixTo: [/\.vue$/] }
+            options: {
+              appendTsSuffixTo: [/\.vue$/]
+            }
           }
         ],
         exclude: /node_modules/

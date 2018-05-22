@@ -3,7 +3,8 @@
 module.exports = {
   root: true,
   parserOptions: {
-    parser: 'babel-eslint'
+    // parser: 'babel-eslint'
+    parser: 'typescript-eslint-parser'
   },
   env: {
     browser: true,
@@ -17,7 +18,8 @@ module.exports = {
   ],
   // required to lint *.vue files
   plugins: [
-    'vue'
+    'vue',
+    'typescript'
   ],
   // add your custom rules here
   rules: {
