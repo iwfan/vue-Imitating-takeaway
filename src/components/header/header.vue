@@ -16,23 +16,38 @@
           span.text {{ seller.supports[0].description }}
     section.bulletin-wrapper
 </template>
-
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({
   name: 'v-header',
   props: {
     seller: {
       type: Object,
-      required: true
+      required: true,
     }
   },
-  data () {
-    return {
-      classMap: {'0': 'decrease', '1': 'discount', '2': 'special', '3': 'invoice', '4': 'guarantee'}
-    }
-  }
-}
+  // data () => string = function() {
+  //   return {}
+  // }
+})
 </script>
+
+// <script>
+// export default {
+//   name: 'v-header',
+//   props: {
+//     seller: {
+//       type: Object,
+//       required: true
+//     }
+//   },
+//   data () {
+//     return {
+//       classMap: {'0': 'decrease', '1': 'discount', '2': 'special', '3': 'invoice', '4': 'guarantee'}
+//     }
+//   }
+// }
+// </script>
 
 <style lang="stylus" scoped>
   @import "../../common/stylus/mixin.styl"
