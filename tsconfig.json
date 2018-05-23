@@ -15,10 +15,10 @@
     //   "dom"
     // ],
     "baseUrl": ".",
-    "types": [
-      "node",
-      "jest"
-    ],
+    // "types": [
+    //   "node",
+    //   "jest"
+    // ],
     "paths": {
       "@/*": [
         "src/*"

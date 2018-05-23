@@ -22,8 +22,10 @@
       span.bulletin-title
       span.bulletin-text {{ seller.bulletin }}
       i.icon-keyboard_arrow_right
-    .background
+    section.background
       img(:src="seller.avatar" width="100%" height="100%")
+    section.detail(v-show="detailShow" transition="fade" @click="detailShow = false")
+      div test
 </template>
 
 <script>
@@ -159,4 +161,18 @@ export default Vue.extend({
       right 0
       z-index -1
       filter blur(10px)
+    .detail
+      position fixed
+      top 0
+      right 0
+      bottom 0
+      left 0
+      transition all .5s
+      backdrop-filter: blur(10px)
+      &.fade-transition
+        opacity 1
+        background rgba(7, 17, 27, .8)
+      &.fade-enter, &.fade-leave
+        opacity 0
+        background rgba(7, 17, 27, 0)
 </style>
