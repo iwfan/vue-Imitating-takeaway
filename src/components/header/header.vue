@@ -83,10 +83,10 @@ export default Vue.extend({
             bg-img('brand')
             background-size 30px 18px
             background-repeat no-repeat
-            vertical-align middle
+            vertical-align top
         .description
           font-size 12px
-          font-weight 200
+          font-weight 400
           line-height 12px
           margin-bottom 10px
         .support
@@ -97,7 +97,7 @@ export default Vue.extend({
             width 12px
             height 12px
             margin-right 4px
-            vertical-align middle
+            vertical-align top
             background-size 12px 12px
             background-repeat no-repeat
             &.decrease
@@ -116,16 +116,16 @@ export default Vue.extend({
         right 12px
         bottom 15px
         padding 7px 8px
-        heigh 10px
+        // height 10px
         background-color rgba(0, 0, 0, .2)
         border-radius 15px
         cursor pointer
         .count
           font-size 10px
-          font-weight 200
+          font-weight 400
           line-height 12px
         .icon-keyboard_arrow_right
-          vertical-align middle
+          vertical-align top
           margin-left 2px
     .bulletin-wrapper
       position relative
@@ -136,6 +136,7 @@ export default Vue.extend({
       white-space nowrap
       overflow hidden
       text-overflow ellipsis
+      line-height 28px
       .bulletin-title
         display inline-block
         vertical-align middle
@@ -146,8 +147,7 @@ export default Vue.extend({
         background-size 22px 12px
         background-repeat no-repeat
       .bulletin-text
-        line-height 28px
-        font-weight 200
+        font-weight 400
         margin 0 4px
       .icon-keyboard_arrow_right
         position absolute
