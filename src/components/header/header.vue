@@ -25,11 +25,17 @@
     section.background
       img(:src="seller.avatar" width="100%" height="100%")
     section.detail(v-show="detailShow" transition="fade" @click="detailShow = false")
-      div test
+      .detail-wrapper.clearfix
+        .detail-main
+          h1.name {{ seller.name }}
+          star(:size="48" :score="seller.score")
+      .detail-close
+        i.icon-close
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
+import Star from '@/components/star/star.vue'
 export default Vue.extend({
   name: 'v-header',
   props: {
@@ -43,17 +49,21 @@ export default Vue.extend({
       classMap: {'0': 'decrease', '1': 'discount', '2': 'special', '3': 'invoice', '4': 'guarantee'},
       detailShow: false
     }
+  },
+  components: {
+    Star
   }
 })
 </script>
 
 <style lang="stylus" scoped>
-  @import "../../common/stylus/mixin.styl"
+  @import "~@/common/stylus/mixin"
   header
     position relative
     color  #fff
     font-family "PingFang SC","Microsoft YaHei",sans-serif
     background-color rgba(7, 17, 27, .5)
+    overflow hidden
     .content-wrapper
       position relative
       padding 24px 12px 18px 24px
@@ -125,7 +135,7 @@ export default Vue.extend({
           font-weight 400
           line-height 12px
         .icon-keyboard_arrow_right
-          vertical-align top
+          vertical-align middle
           margin-left 2px
     .bulletin-wrapper
       position relative
@@ -139,8 +149,8 @@ export default Vue.extend({
       line-height 28px
       .bulletin-title
         display inline-block
-        vertical-align middle
-        // margin-top 8px
+        // vertical-align middle
+        margin-top 8px
         width 22px
         height 12px
         bg-img('bulletin')
@@ -148,6 +158,7 @@ export default Vue.extend({
         background-repeat no-repeat
       .bulletin-text
         font-weight 400
+        vertical-align top
         margin 0 4px
       .icon-keyboard_arrow_right
         position absolute
@@ -164,15 +175,28 @@ export default Vue.extend({
     .detail
       position fixed
       top 0
-      right 0
-      bottom 0
       left 0
-      transition all .5s
-      backdrop-filter: blur(10px)
-      &.fade-transition
-        opacity 1
-        background rgba(7, 17, 27, .8)
-      &.fade-enter, &.fade-leave
-        opacity 0
-        background rgba(7, 17, 27, 0)
+      width 100%
+      height 100%
+      z-index 100
+      overflow auto
+      background rgba(7, 17, 27, 0.8)
+      .detail-wrapper
+        width 100%
+        min-height 100%
+        .detail-main
+          margin-top 64px
+          padding-bottom 64px
+          .name
+            text-align center
+            font-size 16px
+            font-weight 700
+            line-height 12px
+      .detail-close
+        position relative
+        width 32px
+        height 32px
+        margin -64px auto 0 auto
+        clear both
+        font-size 32px
 </style>

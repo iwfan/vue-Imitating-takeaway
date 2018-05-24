@@ -34,7 +34,7 @@ export default Vue.extend({
     })
   },
   mounted () {
-    // this.$router.go('/goods')
+
   }
 })
 </script>
