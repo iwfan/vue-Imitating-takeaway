@@ -24,13 +24,31 @@
       i.icon-keyboard_arrow_right
     section.background
       img(:src="seller.avatar" width="100%" height="100%")
-    section.detail(v-show="detailShow" transition="fade" @click="detailShow = false")
-      .detail-wrapper.clearfix
-        .detail-main
-          h1.name {{ seller.name }}
-          star(:size="48" :score="seller.score")
-      .detail-close
-        i.icon-close
+    transition(name="fade")
+      section.detail(v-show="detailShow")
+        .blur
+        .detail-wrapper.clearfix
+          .detail-main
+            h1.name {{ seller.name }}
+            .star-wrapper
+              star(:size="48" :score="seller.score")
+            .titile
+              .line
+              .text 优惠信息
+              .line
+            ul.supports(v-if="seller.supports")
+              li.support-item(v-for="(item, index) in seller.supports"
+                :key="index")
+                span.icon(:class="classMap[seller.supports[index].type]")
+                span.text {{seller.supports[index].description}}
+            .titile
+              .line
+              .text 商家公告
+              .line
+            .bulletin
+              .content {{ seller.bulletin }}
+        .detail-close(@click="detailShow = false")
+          i.icon-close
 </template>
 
 <script lang="ts">
@@ -181,6 +199,20 @@ export default Vue.extend({
       z-index 100
       overflow auto
       background rgba(7, 17, 27, 0.8)
+      // transition all .5s linear
+      backdrop-filter blur(10px)
+      &.fade-enter-active, &.fade-leave-active {
+        transition: opacity .5s;
+      }
+      &.fade-enter, &.fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
+      }
+      .blur
+        width 100%
+        height 100%
+        position absolute
+        z-index -1
+        filter blur(10px)
       .detail-wrapper
         width 100%
         min-height 100%
@@ -192,6 +224,62 @@ export default Vue.extend({
             font-size 16px
             font-weight 700
             line-height 12px
+          .star-wrapper
+            margin-top 18px
+            padding 2px 0
+            text-align center
+          .titile
+            display flex
+            width 80%
+            margin 28px auto 24px auto
+            .line
+              flex 1
+              position relative
+              top -6px
+              border-bottom 1px solid rgba(255, 255, 255, .2)
+            .text
+              padding 0 12px
+              font-weight 700
+              font-size 14px
+          .supports
+            width 80%
+            margin 0 auto
+            .support-item
+              padding 0 12px
+              margin-bottom 12px
+              font-size 0
+              &:last-child
+                margin-bottom 0
+              .icon
+                display inline-block
+                width 16px
+                height 16px
+                vertical-align top
+                margin-right 6px
+                background-size 16px 16px
+                background-repeat no-repeat
+                &.decrease
+                  bg-img('decrease_2')
+                &.discount
+                  bg-img('discount_2')
+                &.special
+                  bg-img('special_2')
+                &.invoice
+                  bg-img('invoice_2')
+                &.guarantee
+                  bg-img('guarantee_2')
+              .text
+                font-size 12px
+                font-weight 400
+                line-height 16px
+          .bulletin
+            width 80%
+            margin 0 auto
+            .content
+              padding 0 12px
+              line-height 24px
+              font-size 12px
+              font-weight 400
       .detail-close
         position relative
         width 32px
