@@ -1,13 +1,13 @@
 <template lang="pug">
   .goods
-    .menu-wrapper
+    .menu-wrapper(ref="menu-wrapper")
       ul
         li.menu-item(v-for="(item, index) of goods"
            :key="index")
           span.text.border-1px
             span.icon(v-if="item.type > 0" :class="classMap[item.type]")
             | {{ item.name }}
-    .foods-wrapper
+    .foods-wrapper(ref="food-wrapper")
       ul
         li.food-list(v-for="(item, index) of goods" :key="index")
           h1.title {{ item.name }}
@@ -19,16 +19,17 @@
                 h2.name {{ food.name }}
                 p.desc {{ food.description }}
                 .extra
-                  span 月售{{food.sellCount}}份
+                  span.count 月售{{food.sellCount}}份
                   span 好评率{{food.rating}}%
                 .price
-                  span ￥{{ food.price }}
-                  span(v-if="food.oldPrice") ￥{{ food.oldPrice }}
+                  span.now ￥{{ food.price }}
+                  span.old(v-if="food.oldPrice") ￥{{ food.oldPrice }}
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import axios from 'axios'
+import BScroll from 'better-scroll'
 export default Vue.extend({
   name: 'goods',
   props: {
@@ -39,7 +40,9 @@ export default Vue.extend({
   data () {
     return {
       classMap: {'0': 'decrease', '1': 'discount', '2': 'special', '3': 'invoice', '4': 'guarantee'},
-      goods: []
+      goods: [],
+      menuScroll: {},
+      foodScroll: {}
     }
   },
   created () {
@@ -47,6 +50,19 @@ export default Vue.extend({
       this.goods = data.data
       console.log(this.goods)
     })
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this._initScroll()
+    })
+  },
+  methods: {
+    _initScroll () {
+      console.log(this.$refs['food-wrapper'])
+      this.menuScroll = new BScroll(this.$refs['menu-wrapper'] as Element, {})
+      this.foodScroll = new BScroll(this.$refs['food-wrapper'] as Element, {})
+      // this.menuScroll = new BScroll(this.$refs.foodWrapper, {})
+    }
   }
 })
 </script>
@@ -123,8 +139,28 @@ export default Vue.extend({
         .content
           flex 1
           .name
-            margin 2px 0 0 0
+            margin 2px 0 8px 0
             font-size 14px
+            line-height 14px
             color rgb(7, 17, 27)
-            line-height 28px
+          .desc, .extra
+            line-height 10px
+            font-size 10px
+            color rgb(143,157,159)
+          .desc
+            margin-bottom 8px
+            line-height 12px
+          .extra
+            .count
+              margin-right 12px
+          .price
+            font-weight 700
+            line-height 24px
+            .now
+              margin-right 8px
+              font-size 14px
+              color rgb(240, 20, 20)
+            .old
+              text-decoration line-through
+              font-size 10px
 </style>
