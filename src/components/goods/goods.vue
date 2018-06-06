@@ -54,7 +54,6 @@ export default Vue.extend({
 <style lang="stylus" scoped>
   @import "~@/common/stylus/mixin"
   .goods
-    font-family "PingFang SC","Microsoft YaHei",sans-serif
     display flex
     position absolute
     top 174px
@@ -124,5 +123,8 @@ export default Vue.extend({
         .content
           flex 1
           .name
-            margin 0
+            margin 2px 0 0 0
+            font-size 14px
+            color rgb(7, 17, 27)
+            line-height 28px
 </style>

@@ -51,7 +51,7 @@ export default Vue.extend({
 <style lang="stylus" scoped>
 @import 'common/stylus/mixin.styl'
 #takeaway
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "PingFang SC","Microsoft YaHei",sans-serif
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   .tab

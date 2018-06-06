@@ -79,7 +79,6 @@ export default Vue.extend({
   header
     position relative
     color  #fff
-    font-family "PingFang SC","Microsoft YaHei",sans-serif
     background-color rgba(7, 17, 27, .5)
     overflow hidden
     .content-wrapper
