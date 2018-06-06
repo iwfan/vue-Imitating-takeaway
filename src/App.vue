@@ -42,6 +42,10 @@ export default Vue.extend({
 <style lang="stylus">
   a
     text-decoration none
+  ul
+    margin 0
+    padding 0
+    list-style none
 </style>
 
 <style lang="stylus" scoped>
