@@ -3,13 +3,15 @@
     .menu-wrapper(ref="menu-wrapper")
       ul
         li.menu-item(v-for="(item, index) of goods"
-           :key="index")
+           :key="index"
+           :class="{current: currentIndex === index}"
+           @click="selectMenu(index, $event)")
           span.text.border-1px
             span.icon(v-if="item.type > 0" :class="classMap[item.type]")
             | {{ item.name }}
     .foods-wrapper(ref="food-wrapper")
       ul
-        li.food-list(v-for="(item, index) of goods" :key="index")
+        li.food-list.food-list-hook(v-for="(item, index) of goods" :key="index")
           h1.title {{ item.name }}
           ul
             li.food-item.border-1px(v-for="(food, index) of item.foods" :key="index")
@@ -42,26 +44,61 @@ export default Vue.extend({
       classMap: {'0': 'decrease', '1': 'discount', '2': 'special', '3': 'invoice', '4': 'guarantee'},
       goods: [],
       menuScroll: {},
-      foodScroll: {}
+      foodScroll: {},
+      listHeight: [],
+      scrollY: 0
+    }
+  },
+  computed: {
+    currentIndex (): number {
+      for (let i = 0; i < this.listHeight.length; i++) {
+        let h1 = this.listHeight[i]
+        let h2 = this.listHeight[i + 1]
+        if (!h2 || (this.scrollY >= h1 && this.scrollY < h2)) {
+          return i
+        }
+      }
+      return 0
     }
   },
   created () {
     axios('/api/goods').then(({data}) => {
       this.goods = data.data
       console.log(this.goods)
+      this.$nextTick(() => {
+        this._initScroll()
+        this._calculateHeight()
+      })
     })
   },
-  mounted () {
-    this.$nextTick(() => {
-      this._initScroll()
-    })
-  },
+  mounted () { },
   methods: {
-    _initScroll () {
-      console.log(this.$refs['food-wrapper'])
-      this.menuScroll = new BScroll(this.$refs['menu-wrapper'] as Element, {})
-      this.foodScroll = new BScroll(this.$refs['food-wrapper'] as Element, {})
-      // this.menuScroll = new BScroll(this.$refs.foodWrapper, {})
+    _initScroll ():void {
+      this.menuScroll = new BScroll(this.$refs['menu-wrapper'] as Element, {
+        click: true
+      })
+      this.foodScroll = new BScroll(this.$refs['food-wrapper'] as Element, {
+        probeType: 3
+      })
+      ;(this.foodScroll as BScroll).on('scroll', pos => {
+        this.scrollY = Math.abs(Math.round(pos.y as number))
+      })
+    },
+    _calculateHeight ():void {
+      let foodWrapper = this.$refs['food-wrapper']
+      let foodList = (foodWrapper as Element).querySelectorAll('.food-list-hook')
+      let height = 0
+      this.listHeight.push(height as never)
+      for (let i = 0; i < foodList.length; i++) {
+        height += foodList[i].clientHeight
+        this.listHeight.push(height as never)
+      }
+    },
+    selectMenu (index: number, event: Event): void {
+      let foodWrapper = this.$refs['food-wrapper']
+      let foodList = (foodWrapper as Element).querySelectorAll('.food-list-hook')
+      let el = foodList[index]
+      ;(this.foodScroll as BScroll).scrollToElement(el as HTMLElement, 300)
     }
   }
 })
@@ -80,14 +117,22 @@ export default Vue.extend({
       flex: 0 0 80px
       width 80px
       background-color #f3f5f7
-      ul
-        padding 0 12px
       .menu-item
         display table
         width 56px
         height 54px
+        padding 0 12px
         line-height 14px
         text-align center
+        &.current
+          position relative
+          z-index 12
+          margin-top -1px
+          background-color #fff
+          font-weight 700
+          .text
+            &::after
+              display none
         .icon
           display inline-block
           width 12px
