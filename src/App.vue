@@ -9,7 +9,7 @@
       .tab-item
         router-link(to="seller") 商家
     .content
-      router-view
+      router-view(:seller="seller")
 </template>
 
 <script lang="ts">

@@ -26,12 +26,17 @@
                 .price
                   span.now ￥{{ food.price }}
                   span.old(v-if="food.oldPrice") ￥{{ food.oldPrice }}
+    shopcart(:delivery-price="seller.deliveryPrice"
+             :min-price="seller.minPrice"
+             :selectFoods="selectFoods")
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import axios from 'axios'
 import BScroll from 'better-scroll'
+import _ from 'lodash'
+import shopcart from '@/components/shopcart/shopcart.vue'
 export default Vue.extend({
   name: 'goods',
   props: {
@@ -59,12 +64,25 @@ export default Vue.extend({
         }
       }
       return 0
+    },
+    selectFoods (): Array<any> {
+      return _.flatten((this.goods as Array<any>).map(good => {
+        return good.foods.filter((food: any): any => {
+          return food.count > 0
+        })
+      }))
     }
   },
   created () {
     axios('/api/goods').then(({data}) => {
+      // 初始化一个count属性
+      ;(data.data as Array<any>).map(good => {
+        return good.foods.map((food: any): any => {
+          food.count = 0
+        })
+      })
       this.goods = data.data
-      console.log(this.goods)
+      console.log(this.goods, this.seller)
       this.$nextTick(() => {
         this._initScroll()
         this._calculateHeight()
@@ -100,6 +118,9 @@ export default Vue.extend({
       let el = foodList[index]
       ;(this.foodScroll as BScroll).scrollToElement(el as HTMLElement, 300)
     }
+  },
+  components: {
+    shopcart
   }
 })
 </script>
