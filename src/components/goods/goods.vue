@@ -26,6 +26,8 @@
                 .price
                   span.now ￥{{ food.price }}
                   span.old(v-if="food.oldPrice") ￥{{ food.oldPrice }}
+              .control-wrapper
+                cartcontrol(:food="food")
     shopcart(:delivery-price="seller.deliveryPrice"
              :min-price="seller.minPrice"
              :selectFoods="selectFoods")
@@ -37,6 +39,7 @@ import axios from 'axios'
 import BScroll from 'better-scroll'
 import _ from 'lodash'
 import shopcart from '@/components/shopcart/shopcart.vue'
+import cartcontrol from '@/components/cartcontrol/cartcontrol.vue'
 export default Vue.extend({
   name: 'goods',
   props: {
@@ -96,7 +99,8 @@ export default Vue.extend({
         click: true
       })
       this.foodScroll = new BScroll(this.$refs['food-wrapper'] as Element, {
-        probeType: 3
+        probeType: 3,
+        click: true
       })
       ;(this.foodScroll as BScroll).on('scroll', pos => {
         this.scrollY = Math.abs(Math.round(pos.y as number))
@@ -120,7 +124,8 @@ export default Vue.extend({
     }
   },
   components: {
-    shopcart
+    shopcart,
+    cartcontrol
   }
 })
 </script>
@@ -229,4 +234,8 @@ export default Vue.extend({
             .old
               text-decoration line-through
               font-size 10px
+        .control-wrapper
+          position absolute
+          right 0
+          bottom 12px
 </style>
