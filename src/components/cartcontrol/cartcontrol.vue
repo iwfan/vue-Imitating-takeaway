@@ -1,8 +1,10 @@
 <template lang="pug">
   .cart_control
-    .decrese(v-show="food.count>0" @click="decrese")
-      i.icon-remove_circle_outline
-    span.count(v-show="food.count>0") {{ food.count }}
+    transition(name="fade")
+      .decrese(v-show="food.count>0" @click="decrese")
+        i.icon-remove_circle_outline
+    .count(v-show="food.count>0")
+      span.text {{ food.count }}
     .increse(@click="increse")
       i.icon-add_circle
 </template>
@@ -28,20 +30,31 @@ export default Vue.extend({
 
 <style lang="stylus" scoped>
   .cart_control
-    height 24px
-    i, span
+    .decrese, .increse, .count
       display inline-block
       vertical-align top
-    i
-      color rgb(0, 160, 220)
+    .decrese, .increse
       padding 6px
+      box-sizing border-box
       font-size 24px
       line-height 24px
-    span
-      font-size 10px
-      color rgb(147, 153, 159)
-      line-height 24px
+      color rgb(0, 160, 200)
+    .decrese
+      i
+        display inline-block
+      &.fade-enter-active, &.fade-leave-active
+        transition: all 1s linear;
+        // transform translate3d(0, 0, 0)
+      &.fade-enter, &.fade-leave-to
+        opacity: 0;
+        // transform translate3d(36px, 0, 0)
+        // i
+        //   transform rotate(180deg)
+    .count
       width 12px
-      padding-top 6px
+      font-size 12px
+      line-height 24px
       text-align center
+      margin-top 6px
+      color rgb(147, 153, 159)
 </style>
