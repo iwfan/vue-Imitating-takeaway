@@ -1,7 +1,7 @@
 <template lang="pug">
   .cart_control
     transition(name="fade")
-      .decrese(v-show="food.count>0" @click="decrese")
+      .decrese(v-show="food.count>0" @click="decrese($event)")
         i.icon-remove_circle_outline
     .count(v-show="food.count>0")
       span.text {{ food.count }}
@@ -11,6 +11,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import eventHub from '@/common/js/eventHub'
 export default Vue.extend({
   props: {
     food: {
@@ -18,8 +19,9 @@ export default Vue.extend({
     }
   },
   methods: {
-    increse (): void {
+    increse ({target}: Event): void {
       this.food.count++
+      eventHub.$emit('increse_count', target)
     },
     decrese ():void {
       this.food.count--
@@ -40,16 +42,21 @@ export default Vue.extend({
       line-height 24px
       color rgb(0, 160, 200)
     .decrese
-      i
-        display inline-block
       &.fade-enter-active, &.fade-leave-active
-        transition: all 1s linear;
-        // transform translate3d(0, 0, 0)
+        transition: all .4s linear;
+        transform translate3d(0, 0, 0)
+        i
+          display inline-block
+          line-height: 24px
+          font-size: 24px
+          color: rgb(0, 160, 220)
+          transition: all 0.4s linear
+          transform: rotate(0)
       &.fade-enter, &.fade-leave-to
         opacity: 0;
-        // transform translate3d(36px, 0, 0)
-        // i
-        //   transform rotate(180deg)
+        transform translate3d(36px, 0, 0)
+        i
+          transform rotate(180deg)
     .count
       width 12px
       font-size 12px

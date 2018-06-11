@@ -92,7 +92,9 @@ export default Vue.extend({
       })
     })
   },
-  mounted () { },
+  mounted () {
+    // this.$on('')
+  },
   methods: {
     _initScroll ():void {
       this.menuScroll = new BScroll(this.$refs['menu-wrapper'] as Element, {
