@@ -1,5 +1,5 @@
 <template lang="pug">
-  .shopcart
+  .shopcart(@click="toggleList")
     .content
       .content-left
         .logo-wrapper
@@ -11,9 +11,25 @@
       .content-right
         .pay(:class="{'active': totalPrice >= minPrice}") {{ payDesc }}
     .ball-container
-      transition(name="fade" v-bind:before-enter="beforeEnter" v-bind:enter="enter" v-bind:after-enter="afterEnter")
-      .ball(v-for="(ball, index) in balls" v-show="ball.show" :key='index')
-        .inner.inner-hook
+      transition(
+      name="drop"
+      v-on:before-enter="beforeEnter"
+      v-on:enter="enter"
+      v-on:after-enter="afterEnter")
+          .ball(v-for="(ball, index) in balls" v-show="ball.show" :key='index')
+            .inner.inner-hook
+    transition(name="fold")
+      .shopcar-list(v-show="listShow")
+        header.header
+          h1.title 购物车
+          span.empty 清空
+        section.content
+          ul
+            li.food(v-for="(food, index) of selectFoods" :key="index")
+              span.name {{ food.name }}
+              span.price  {{ food.price * food.count }}
+              .control-wrapper
+                cartcontrol(:food="food")
 </template>
 
 <script>
@@ -38,8 +54,9 @@ export default Vue.extend({
   },
   data () {
     return {
-      balls: Array.apply(null, {length: 5}).map(() => ({ show: false })),
-      dropBalls: []
+      balls: Array.apply(null, {length: 1}).map(() => ({ show: false })),
+      dropBalls: [],
+      listShow: false
     }
   },
   created () {
@@ -73,7 +90,7 @@ export default Vue.extend({
   },
   methods: {
     drop (el) {
-      debugger
+      // debugger
       for (const ball of this.balls) {
         if (!ball.show) {
           ball.show = true
@@ -84,6 +101,7 @@ export default Vue.extend({
       }
     },
     beforeEnter (el) {
+      // debugger
       let count = this.balls.length
       while (count--) {
         let ball = this.balls[count]
@@ -115,6 +133,11 @@ export default Vue.extend({
       if (ball) {
         ball.show = false
         el.style.display = 'none'
+      }
+    },
+    toggleList () {
+      if (this.totalCount) {
+        this.listShow = !this.listShow
       }
     }
   }
@@ -215,12 +238,19 @@ export default Vue.extend({
         left: 32px
         bottom: 22px
         z-index: 200
-        &.drop-transition
-          transition: all 0.4s cubic-bezier(0.49, -0.29, 0.75, 0.41)
+        &.drop-enter-active
+          transition: all .4s cubic-bezier(0.49, -0.29, 0.75, 0.41)
           .inner
             width: 16px
             height: 16px
             border-radius: 50%
             background: rgb(0, 160, 220)
             transition: all 0.4s linear
+    .shopcar-list
+      position: absolute
+      top: 0
+      left: 0
+      width 100%
+      background-color: red
+      z-index -1
 </style>
