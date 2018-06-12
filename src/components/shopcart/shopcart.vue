@@ -10,14 +10,15 @@
         .desc 另需配送费{{ deliveryPrice }}元
       .content-right
         .pay(:class="{'active': totalPrice >= minPrice}") {{ payDesc }}
-    .ball-container
-      transition(
-      name="drop"
-      v-on:before-enter="beforeEnter"
-      v-on:enter="enter"
-      v-on:after-enter="afterEnter")
-          .ball(v-for="(ball, index) in balls" v-show="ball.show" :key='index')
-            .inner.inner-hook
+    transition-group(
+    name="drop"
+    tag="div"
+    :class="'ball-container'"
+    v-on:before-enter="beforeEnter"
+    v-on:enter="enter"
+    v-on:after-enter="afterEnter")
+        .ball(v-for="(ball, index) in balls" v-show="ball.show" :key='index')
+          .inner.inner-hook
     transition(name="fold")
       .shopcar-list(v-show="listShow")
         header.header
@@ -34,6 +35,7 @@
 
 <script>
 import Vue from 'vue'
+import cartcontrol from '@/components/cartcontrol/cartcontrol.vue'
 import eventHub from '@/common/js/eventHub'
 export default Vue.extend({
   props: {
@@ -54,7 +56,7 @@ export default Vue.extend({
   },
   data () {
     return {
-      balls: Array.apply(null, {length: 1}).map(() => ({ show: false })),
+      balls: Array.apply(null, {length: 5}).map(() => ({ show: false })),
       dropBalls: [],
       listShow: false
     }
@@ -90,7 +92,6 @@ export default Vue.extend({
   },
   methods: {
     drop (el) {
-      // debugger
       for (const ball of this.balls) {
         if (!ball.show) {
           ball.show = true
@@ -101,7 +102,6 @@ export default Vue.extend({
       }
     },
     beforeEnter (el) {
-      // debugger
       let count = this.balls.length
       while (count--) {
         let ball = this.balls[count]
@@ -140,6 +140,9 @@ export default Vue.extend({
         this.listShow = !this.listShow
       }
     }
+  },
+  components: {
+    cartcontrol
   }
 })
 </script>
